@@ -1,0 +1,61 @@
+server:
+    port: 8210
+    tomcat:
+        uri-encoding: UTF-8
+    servlet:
+        encoding:
+            enabled: true
+            force: true
+            charset: UTF-8
+spring:
+    main:
+        banner-mode: off
+        allow-bean-definition-overriding: true
+
+    devtools:
+        livereload:
+            enabled: false
+            port: 35737
+        restart:
+            enabled: true
+            additional-paths: src/main/java
+
+    # 应用名称
+    application:
+        name: cloud-client
+
+    cloud:
+        # 配置Loadbalancer默认缓存Caffeine
+        loadbalancer:
+            cache:
+                enabled: true
+                caffeine:
+                    spec: initialCapacity=100,expireAfterWrite=5s
+        nacos:
+            discovery:
+                # Nacos集群中所有节点服务器（推荐通过Nginx代理访问Nacos集群）
+                server-addr: http://win10:8848,http://centos:8848,http://ubuntu:8848
+
+    jackson:
+        serialization:
+            FAIL_ON_EMPTY_BEANS: false
+
+
+
+# 设置Feign客户超时时间
+feign:
+    client:
+        default-config:
+            connection-timeout: 1000
+            read-timeout: 3000
+            logger-level: FULL
+
+
+# 自定义service-url配置
+service-url:
+    nacos-service: cloud-service
+
+
+logging:
+    level:
+        web: DEBUG

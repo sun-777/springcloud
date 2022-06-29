@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.sun.common.entity">
+    <typedef name="Gender" class="com.sun.common.typehandler.GenderType" />
+    <class name="Teacher" table="teacher" >
+        <id name="id" column="id" type="java.lang.String" length="12" >
+            <generator class="com.sun.common.id.CustomIdGenerator" />
+        </id>
+        <!-- 属性映射 -->
+        <property name="name" column="name" type="java.lang.String" length="20" not-null="true" />
+        <property name="gender" column="gender" type="com.sun.common.typehandler.GenderType" />
+        <property name="birth" column="birth" type="java.time.LocalDate" not-null="true" />
+        <!-- 一对多 -->
+        <set name="courses"  table="course" inverse="true" batch-size="10">
+            <key column="tid" foreign-key="fk_teacher_id" />
+            <one-to-many class="Course" />
+        </set>
+    </class>
+</hibernate-mapping>

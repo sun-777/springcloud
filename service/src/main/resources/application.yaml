@@ -1,0 +1,63 @@
+server:
+    port: 8089
+    tomcat:
+        uri-encoding: UTF-8
+    servlet:
+        encoding:
+            enabled: true
+            force: true
+            charset: UTF-8
+
+spring:
+    # 自定义配置 -- id生成器配置
+    # snowflakeId和objectId只能有一个生效（enable为true生效），若它们的enable属性都设置为true，那么默认是snowflakeId
+    id-generator:
+        snowflake-id:
+            enable: true
+            # work_id range [0, 1023]，每台独立机器hostname对应一个work_id，且每个work_id唯一
+            # work-id配置格式: [hostname]:[work_id]
+            work-id:
+                - win10:1
+                - centos:2
+                - ubuntu:3
+                - redhat:4
+        object-id:
+            enable: false
+    # 应用名称
+    application:
+        name: cloud-service
+    main:
+        banner-mode: off
+        allow-bean-definition-overriding: true
+
+    devtools:
+        livereload:
+            enabled: false
+            port: 35730
+        restart:
+            enabled: true
+            additional-paths: src/main/java
+
+    cloud:
+        nacos:
+            discovery:
+                # Nacos集群中所有节点服务器（推荐通过Nginx代理访问Nacos集群）
+                server-addr: http://win10:8848,http://centos:8848,http://ubuntu:8848
+
+
+# 暴露的监控端点
+management:
+    endpoints:
+        web:
+            exposure:
+                include:
+                    - '*'
+
+
+# Hibernate + HikariCP数据源配置（见persistence.xml）
+
+logging:
+    level:
+        '[com.zaxxer.hikari.HikariConfig]': debug
+        '[com.zaxxer.hikari]': debug
+        '[org.hibernate.sql]': debug

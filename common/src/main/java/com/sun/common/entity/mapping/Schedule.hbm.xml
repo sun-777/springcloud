@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.sun.common.entity">
+    <typedef name="Weekday" class="com.sun.common.typehandler.WeekdayType" />
+    <typedef name="Lesson" class="com.sun.common.typehandler.LessonType" />
+    
+    <class name="Schedule" table="schedule" >
+        <id name="id" column="id" type="java.lang.String" length="12" >
+            <generator class="com.sun.common.id.CustomIdGenerator" />
+        </id>
+        <!-- 属性映射 -->
+        <property name="weekday" column="weekday" type="com.sun.common.typehandler.WeekdayType" />
+        <property name="lesson" column="lesson" type="com.sun.common.typehandler.LessonType" />
+        <!-- 基于外键的单向一对一关系，one-to-one是特殊的多对一关系。通过控制多的一方唯一，实现一对一 -->
+        <many-to-one name="course" class="Course" column="cid" foreign-key="fk_course_id" unique="true" not-null="true" />
+    </class>
+</hibernate-mapping>

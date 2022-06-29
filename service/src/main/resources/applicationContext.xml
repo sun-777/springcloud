@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+    <!--
+        创建SessionFactory Bean：
+            1、如果Hibernate本机机制引导，通过BootstrapServiceRegistryBuilder创建SessionFactory
+            2、如果使用的是Spring，Hibernate引导，通过LocalSessionFactoryBean完成创建SessionFactory的
+            3、如果使用的是Spring，可是JPA引导，通过LocalContainerEntityManagerFactoryBean创建EntityManagerFactory；
+               也可以Hibernate引导，通过Persistence类或EntityManagerFactoryBuilder创建JPA EntityManagerFactory。
+            推荐通过JPA引导，因为与传统的FlushMode.AUTO相比，JPA FlushModeType.AUTO是更好的选择，前者破坏了本机SQL查询的读写一致性。
+     -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" >
+        <!-- <property name="dataSource" ref="dataSource" /> -->
+        <property name="persistenceXmlLocation" value="classpath:./META-INF/persistence.xml" />
+        <property name="persistenceUnitName" value="com.sun.JpaPersistenceUnit" />
+        <!-- <property name="loadTimeWeaver"> --> <!-- Hibernate不需要load-time weaving -->
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="generateDdl" value="false"/>
+                <property name="showSql" value="false"/>
+            </bean>
+        </property>
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+        </property>
+    </bean>
+
+
+    <!-- Jpa事务管理器配置 -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <constructor-arg type="javax.persistence.EntityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:advice id="transactionAdvice">
+        <tx:attributes>
+            <tx:method name="save" rollback-for="java.lang.Exception" />
+            <tx:method name="persist" rollback-for="java.lang.Exception" />
+            <tx:method name="update" rollback-for="java.lang.Exception" />
+            <tx:method name="saveOrUpdate" rollback-for="java.lang.Exception" />
+            <tx:method name="delete" rollback-for="java.lang.Exception" />
+            <tx:method name="batchSave" rollback-for="java.lang.Exception" />
+            <tx:method name="batchUpdate" rollback-for="java.lang.Exception" />
+            <tx:method name="batchDelete" rollback-for="java.lang.Exception" />
+            <tx:method name="*" propagation="SUPPORTS" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="transactionPointcut" expression="execution(public * com.sun.server.service.impl.*ServiceImpl.*(..))" />
+        <aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut"/>
+    </aop:config>
+
+</beans>

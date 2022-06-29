@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+     http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <!-- transaction-type: JTA | RESOURCE_LOCAL -->
+    <persistence-unit name="com.sun.JpaPersistenceUnit" transaction-type="RESOURCE_LOCAL" >
+        
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- 指定持久化提供商使用的JTA数据源的全局JNDI名称（可选） -->
+        <!-- <jta-data-source/> -->
+        <!-- 指定持久化提供商使用的non-JTA数据源的全局JNDI名称（可选） -->
+        <!-- <non-jta-data-source/> -->
+        <!-- 声明orm.xml所在的位置，即指定映射文件（可选） -->
+        <!-- <mapping-file/> -->
+        <!-- 以包含persistence.xml的jar文件为基准的相对路径，添加额外的jar文件（可选） -->
+        <!-- <jar-file /> -->
+
+
+        <!-- 显示列出实体类（可选） -->
+        <class>com.sun.common.entity.Teacher</class>
+        <class>com.sun.common.entity.Course</class>
+        <class>com.sun.common.entity.Schedule</class>
+
+        <!-- 声明是否扫描jar文件中标注了@Entity类从上下文排除（可选） -->
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <!-- 使用二级缓存： ALL | NONE | ENABLE_SELECTIVE | DISABLE_SELECTIVE -->
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+
+
+        <!-- 专有属性设置（可选） -->
+        <properties>
+            <!-- HikariCP数据源配置 -->
+            <property name="hibernate.connection.url" value="jdbc:mysql://centos:3306/hibernate" />
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver" />
+            <property name="hibernate.connection.username" value="test" />
+            <property name="hibernate.connection.password" value="Test123+"/>
+            <property name="hibernate.hikari.poolName" value="hikari-ds1" />
+            <property name="hibernate.hikari.maximumPoolSize" value="20" />
+            <property name="hibernate.hikari.minimumIdle" value="5" />
+            <property name="hibernate.hikari.idleTimeout" value="600000" />
+            <property name="hibernate.hikari.connectionTimeout" value="5000" />
+            <property name="hibernate.hikari.maxLifetime" value="1800000" />
+            <property name="hibernate.hikari.leakDetectionThreshold" value="600000" />
+            <property name="hibernate.hikari.connectionTestQuery" value="SELECT 1" />
+            <property name="hibernate.hikari.connectionInitSql" value="SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci" />
+            <property name="hibernate.hikari.allowPoolSuspension" value="false" />
+
+                <!-- HikariCP连接池中，MySQL数据库的连接属性 -->
+            <property name="hibernate.hikari.dataSource.useSSL" value="true" />
+            <property name="hibernate.hikari.dataSource.useUnicode" value="true" />
+            <property name="hibernate.hikari.dataSource.characterEncoding" value="utf8" />
+            <property name="hibernate.hikari.dataSource.socketTimeout" value="1500" />
+            <property name="hibernate.hikari.dataSource.autoReconnect" value="true" />
+            <property name="hibernate.hikari.dataSource.useLegacyDatetimeCode" value="false" />
+            <property name="hibernate.hikari.dataSource.serverTimezone" value="Asia/Shanghai" />
+            <property name="hibernate.hikari.dataSource.zeroDateTimeBehavior" value="convertToNull" />
+            <property name="hibernate.hikari.dataSource.useCursorFetch" value="true" />
+            <property name="hibernate.hikari.dataSource.allowPublicKeyRetrieval" value="true" />
+            <property name="hibernate.hikari.dataSource.allowMultiQueries" value="true" />
+            <property name="hibernate.hikari.dataSource.cachePrepStmts" value="true" />
+            <property name="hibernate.hikari.dataSource.prepStmtCacheSize" value="250" />
+            <property name="hibernate.hikari.dataSource.prepStmtCacheSqlLimit" value="2048" />
+            <property name="hibernate.hikari.dataSource.useServerPrepStmts" value="true" />
+            <property name="hibernate.hikari.dataSource.useLocalSessionState" value="true" />
+            <property name="hibernate.hikari.dataSource.rewriteBatchedStatements" value="true" />
+            <property name="hibernate.hikari.dataSource.cacheResultSetMetadata" value="true" />
+            <property name="hibernate.hikari.dataSource.cacheServerConfiguration" value="true" />
+            <property name="hibernate.hikari.dataSource.elideSetAutoCommits" value="true" />
+            <property name="hibernate.hikari.dataSource.maintainTimeStats" value="true" />
+
+
+            <!-- Alibaba Druild连接池配置
+            <property name="name" value="druid-ds1"/>
+            <property name="init" value="true"/>
+            <property name="defaultAutoCommit" value="false"/>
+            <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql://centos:3306/hibernate"/>
+            <property name="username" value="test"/>
+            <property name="password" value="Test123+"/>
+            <property name="initialSize" value="5"/>
+            <property name="maxActive" value="20"/>
+            <property name="minIdle" value="5"/>
+            <property name="maxWait" value="27000000"/>
+            <property name="testOnBorrow" value="true"/>
+            <property name="testWhileIdle" value="true"/>
+            <property name="testOnReturn" value="false"/>
+            <property name="timeBetweenEvictionRunsMillis" value="20000"/>
+            <property name="validationQuery" value="SELECT 1"/>
+            <property name="validationQueryTimeout" value="3000"/>
+            <property name="minEvictableIdleTimeMillis" value="1800000"/>
+            <property name="maxEvictableIdleTimeMillis" value="27000000"/>
+            <property name="keepAlive" value="true"/>
+            <property name="logAbandoned" value="false"/>
+            <property name="removeAbandoned" value="false"/>
+            <property name="poolPreparedStatement" value="false"/>
+            <property name="maxOpenPreparedStatements" value="0"/>
+            <property name="maxPoolPreparedStatementPerConnectionSize" value="0"/>
+            <property name="filters" value="stat,wall,slf4j"/>
+            <property name="connectionProperties" value="useSSL=false;characterEncoding=utf8;connectTimeout=1000;socketTimeout=3000;autoReconnect=true;useUnicode=true;useLegacyDatetimeCode=false;serverTimezone=Asia/Shanghai;zeroDateTimeBehavior=convertToNull;rewriteBatchedStatements=true;useCursorFetch=true;allowPublicKeyRetrieval=true;allowMultiQueries=true"/>
+            <property name="connectionInitSqls" value="SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"/>
+             -->
+
+            <!-- Hibernate属性配置 -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
+            <!-- <property name="hibernate.connection.provider_class" value="com.alibaba.druid.support.hibernate.DruidConnectionProvider" /> -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
+            <property name="hibernate.dialect.storage_engine" value="innodb" />
+            <property name="hibernate.connection.autocommit" value="false" />
+            <!-- Always use for resource-local JPA transactions -->
+            <property name="hibernate.connection.provider_disables_autocommit" value="true" />
+            <!-- 允许懒加载不在事务中进行，可免去懒加载异常 -->
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+            <!-- 指定关联的批量抓取数量 -->
+            <property name="hibernate.default_batch_fetch_size" value="50" />
+            <!-- 指定操作数据库表时，批量插入、更新、删除的数量 -->
+            <property name="hibernate.jdbc.batch_size" value="100" />
+            <!-- 指定查询数据库表记录时，一次抓取记录的数量 -->
+            <property name="hibernate.jdbc.fetch_size" value="50" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+
+            <!--
+                二级缓存设置：不使用二级缓存
+                    Ehcache缓存：org.hibernate.cache.ehcache.internal.SingletonEhcacheRegionFactory
+                    使用redis作为二级缓存，可参考：https://www.codenong.com/7650129/
+             -->
+            <property name="hibernate.cache.provider_class" value="org.hibernate.cache.internal.NoCachingRegionFactory" />
+            <property name="hibernate.cache.use_query_cache" value="false" />
+            <property name="hibernate.cache.use_second_level_cache" value="false" />
+
+            <!-- JPA 3.0+，定义悲观锁超时时间（ms） -->
+            <property name="javax.persistence.query.timeout" value="100" />
+            <!-- 定义查询超时时间（ms） -->
+            <property name="javax.persistence.lock.timeout" value="100" />
+
+        </properties>
+    </persistence-unit>
+
+</persistence>
