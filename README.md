@@ -1,3 +1,6 @@
+**SpringCloud Nacos + Hibernate JPA + OpenFeign实现RESTful的数据库记录的并发批处理**
+
+
 ## 一、模块接口说明
 
 ### 1、service模块（RESTful接口）
