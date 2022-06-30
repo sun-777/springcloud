@@ -10,7 +10,7 @@
 - post: http://localhost:8089/query/teacher
 - post: http://localhost:8089/query/course
 - post: http://localhost:8089/query/schedule
-- post: http://localhost:8089/query/multitable/schedule?id=*<teacherId>*
+- post: http://localhost:8089/query/multitable/schedule?id=<teacherId>
 - post: http://localhost:8089/query/multitable/teacher
 - post: http://localhost:8089/query/multitable/maxcountcourse
 
@@ -26,15 +26,15 @@
 
 - **单表查询：查询老师相关记录**
 
-  get: http://localhost:8210/request/query/teacher*[?id=<id>&name=<name>&gender=<gender>&birth=<birth>]*
+  get: http://localhost:8210/request/query/teacher[?id=<id>&name=<name>&gender=<gender>&birth=<birth>]
 
 - 单表查询：查询课目相关记录
 
-  get: http://localhost:8210/request/query/course*[?id=<id>&name=<name>]*
+  get: http://localhost:8210/request/query/course[?id=<id>&name=<name>]
 
 - 单表查询：查询课程安排相关记录
 
-  get: http://localhost:8210/request/query/schedule*[?id=<id>&lesson=<lesson>&weekday=<weekday>]*
+  get: http://localhost:8210/request/query/schedule[?id=<id>&lesson=<lesson>&weekday=<weekday>]
 
 - 多表查询：查询指定id老师的一周所有课程安排
 
