@@ -5,14 +5,14 @@
 
 ### 1、service模块（RESTful接口）
 
-post: http://localhost:8089/db/init
-post: http://localhost:8089/db/clear
-post: http://localhost:8089/query/teacher
-post: http://localhost:8089/query/course
-post: http://localhost:8089/query/schedule
-post: http://localhost:8089/query/multitable/schedule?id=*<teacherId>*
-post: http://localhost:8089/query/multitable/teacher
-post: http://localhost:8089/query/multitable/maxcountcourse
+- post: http://localhost:8089/db/init
+- post: http://localhost:8089/db/clear
+- post: http://localhost:8089/query/teacher
+- post: http://localhost:8089/query/course
+- post: http://localhost:8089/query/schedule
+- post: http://localhost:8089/query/multitable/schedule?id=*<teacherId>*
+- post: http://localhost:8089/query/multitable/teacher
+- post: http://localhost:8089/query/multitable/maxcountcourse
 
 ### 2、client模块（使用了OpenFeign访问service接口）
 
